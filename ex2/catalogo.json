@@ -1,0 +1,7 @@
+[
+  {"nome": "Poção de Vida", "tipo": "Poção", "preco": 15},
+  {"nome": "Espada Longa", "tipo": "Arma", "preco": 60},
+  {"nome": "Arco Élfico", "tipo": "Arma", "preco": 55},
+  {"nome": "Escudo de Ferro", "tipo": "Armadura", "preco": 40},
+  {"nome": "Elmo de Couro", "tipo": "Armadura", "preco": 25}
+]

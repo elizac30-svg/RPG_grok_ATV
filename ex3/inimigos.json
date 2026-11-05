@@ -1,0 +1,6 @@
+[
+  {"nome": "Goblin", "vida_max": 60, "ataque": 12, "defesa": 3, "recompensa": 20},
+  {"nome": "Lobo", "vida_max": 80, "ataque": 15, "defesa": 4, "recompensa": 35},
+  {"nome": "Orc", "vida_max": 120, "ataque": 20, "defesa": 8, "recompensa": 60},
+  {"nome": "Dragão", "vida_max": 250, "ataque": 30, "defesa": 12, "recompensa": 200}
+]
