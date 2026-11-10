@@ -19,11 +19,14 @@ import os
 def carregar_json(caminho, padrao=None):
     """Lê o arquivo JSON e devolve os dados.
     Se o arquivo não existir, devolve o valor 'padrao'."""
-    # TODO
-    raise NotImplementedError
+     try:
+        with open("arquivo.json", "r", encoding="utf-8") as arquivo:
+            return json.load(arquivo)
+    except FileNotFoundError:
+            return []
 
 
 def salvar_json(caminho, dados):
     """Grava os dados no arquivo JSON (apaga o conteúdo antigo)."""
-    # TODO
-    raise NotImplementedError
+     with open("arquivo.json", "w", encoding="utf-8") as arquivo:
+       json.dump(jogos, arquivo, indent=4) 

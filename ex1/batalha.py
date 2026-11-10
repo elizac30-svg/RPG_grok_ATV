@@ -16,17 +16,22 @@ import random
 
 
 def calcular_dano(ataque, defesa, critico=False):
-    """Dano = ataque - defesa, mas nunca menos que 1.
+    """, mas nunca menos que 1.
     Se for um golpe crítico, o dano dobra.
     Exemplos: calcular_dano(18, 3) -> 15    calcular_dano(18, 3, True) -> 30
               calcular_dano(5, 12) -> 1"""
-    # TODO
-    raise NotImplementedError
+    
+    dano = ataque - defesa
+    if dano < 1:
+        dano = False
+    elif dano == critico:
+        dano * 2
 
 
 def aplicar_dano(vida, dano):
     """Devolve a vida depois do golpe (nunca fica negativa).
     Exemplos: aplicar_dano(60, 15) -> 45    aplicar_dano(10, 15) -> 0"""
+    
     # TODO
     raise NotImplementedError
 
@@ -80,7 +85,7 @@ def batalha(heroi, inimigo, pocoes=3):
 
         acao = ler_acao()
         if acao == "1":
-            # TODO: 1) sorteie o crítico:  critico = random.randint(1, 10) == 10
+            critico = random.randint(1, 10) == 10
             #       2) calcule o dano com calcular_dano(ataque do herói, defesa do inimigo, critico)
             #       3) atualize a vida do inimigo com aplicar_dano
             #       4) mostre quanto de dano foi causado (avise se foi crítico)
