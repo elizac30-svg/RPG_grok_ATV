@@ -36,15 +36,33 @@ def registrar_partida(conn, jogador, inimigo, resultado, turnos, vida_restante, 
     """Grava uma partida (INSERT) e devolve o id gerado.
     Se data for None, use a data de hoje:  date.today().isoformat()  -> "2026-11-05"
     Não esqueça do conn.commit()."""
-    # TODO
-    raise NotImplementedError
+    if data is None:
+        data = date.today().isoformat()
+
+    cursor = conn.execute(
+        """
+        INSERT INTO partidas (jogador, inimigo, resultado, turnos, vida_restante, data)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """,
+        (jogador, inimigo, resultado, turnos, vida_restante, data),
+    )
+    conn.commit()
+    return cursor.lastrowid
 
 
 def historico(conn, jogador):
     """Lista as partidas de UM jogador, em ordem de id.
     Cada linha: (id, inimigo, resultado, turnos, vida_restante, data)"""
-    # TODO: SELECT ... FROM partidas WHERE jogador = ? ORDER BY id
-    raise NotImplementedError
+    cursor = conn.execute(
+        """
+        SELECT id, inimigo, resultado, turnos, vida_restante, data
+        FROM partidas
+        WHERE jogador = ?
+        ORDER BY id
+        """,
+        (jogador,),
+    )
+    return cursor.fetchall()
 
 
 def contar_resultados(conn, jogador):
@@ -52,8 +70,12 @@ def contar_resultados(conn, jogador):
         {"vitoria": 1, "derrota": 1, "fuga": 1}
     Faça com um laço for sobre historico(conn, jogador).
     (Na linha do histórico, o resultado é a posição [2].)"""
-    # TODO
-    raise NotImplementedError
+    contagem = {"vitoria": 0, "derrota": 0, "fuga": 0}
+    for linha in historico(conn, jogador):
+        resultado = linha[2]
+        if resultado in contagem:
+            contagem[resultado] = contagem[resultado] + 1
+    return contagem
 
 
 def ranking(conn, limite=5):
@@ -61,8 +83,17 @@ def ranking(conn, limite=5):
     se empatar, quem venceu em menos turnos.
     Cada linha: (jogador, inimigo, turnos, vida_restante)
     Dica: WHERE resultado = 'vitoria'  ORDER BY vida_restante DESC, turnos ASC  LIMIT ?"""
-    # TODO
-    raise NotImplementedError
+    cursor = conn.execute(
+        """
+        SELECT jogador, inimigo, turnos, vida_restante
+        FROM partidas
+        WHERE resultado = 'vitoria'
+        ORDER BY vida_restante DESC, turnos ASC
+        LIMIT ?
+        """,
+        (limite,),
+    )
+    return cursor.fetchall()
 
 
 def exportar_ranking(conn, caminho, limite=5):
@@ -70,5 +101,18 @@ def exportar_ranking(conn, caminho, limite=5):
     Cada posição vira um dicionário:
         {"posicao": 1, "jogador": "Carla", "inimigo": "Orc", "turnos": 8, "vida_restante": 90}
     Use ranking(conn, limite) e arquivos.salvar_json(caminho, lista)."""
-    # TODO
-    raise NotImplementedError
+    melhores = ranking(conn, limite)
+    lista_ranking = []
+
+    for i, linha in enumerate(melhores, start=1):
+        item = {
+            "posicao": i,
+            "jogador": linha[0],
+            "inimigo": linha[1],
+            "turnos": linha[2],
+            "vida_restante": linha[3],
+        }
+        lista_ranking.append(item)
+
+    arquivos.salvar_json(caminho, lista_ranking)
+    return lista_ranking

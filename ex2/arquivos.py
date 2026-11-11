@@ -19,14 +19,14 @@ import os
 def carregar_json(caminho, padrao=None):
     """Lê o arquivo JSON e devolve os dados.
     Se o arquivo não existir, devolve o valor 'padrao'."""
-     try:
-        with open("arquivo.json", "r", encoding="utf-8") as arquivo:
-            return json.load(arquivo)
-    except FileNotFoundError:
-            return []
+    if not os.path.exists(caminho):
+        return padrao
+    with open(caminho, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+        return dados
 
 
 def salvar_json(caminho, dados):
     """Grava os dados no arquivo JSON (apaga o conteúdo antigo)."""
-     with open("arquivo.json", "w", encoding="utf-8") as arquivo:
-       json.dump(jogos, arquivo, indent=4) 
+    with open(caminho, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, ensure_ascii=False, indent=2)
